@@ -1,6 +1,10 @@
 # Prometheus and Grafana Kubernetes Monitoring Setup
 
+```
 Kubernetes 1.8+
+Grafana:5.0.1
+Prometheus:v2.1.0
+```
 
 Apply:
 ```
