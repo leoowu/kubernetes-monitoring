@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prometheus-core
+  namespace: monitoring
+  labels:
+    app: prometheus
+    component: core
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: prometheus-main
+      labels:
+        app: prometheus
+        component: core
+    spec:
+      serviceAccountName: prometheus-k8s
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.1.0
+        args:
+          - '--storage.tsdb.retention=12h'
+          - '--config.file=/etc/prometheus/prometheus.yaml'
+        env:
+        - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
+          value: "asd"
+        ports:
+        - name: webui
+          containerPort: 9090
+        resources:
+          requests:
+            cpu: 250m
+            memory: 250M
+          limits:
+            cpu: 1000m
+            memory: 1000M
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-core

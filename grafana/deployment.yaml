@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: grafana-core
+  namespace: monitoring
+  labels:
+    app: grafana
+    component: core
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+        component: core
+    spec:
+      containers:
+      - image: grafana/grafana:5.0.1
+        name: grafana-core
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100M
+          limits:
+            cpu: 500m
+            memory: 500M
+        env:
+          - name: GF_AUTH_BASIC_ENABLED
+            value: "true"
+          - name: GF_AUTH_ANONYMOUS_ENABLED
+            value: "false"
+          - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
+            value: "asd"
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /login
+            port: 3000
+          # initialDelaySeconds: 30
+          # timeoutSeconds: 1
+        volumeMounts:
+          - name: grafana-persistent-storage
+            mountPath: /var
+          - name: config-volume
+            mountPath: /etc/grafana/grafana.ini
+            subPath: grafana.ini
+          - name: grafana-secret
+            mountPath: /etc/grafana/tls
+      volumes:
+        - name: grafana-persistent-storage
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: grafana-config
+        - name: grafana-secret
+          secret:
+            secretName: grafana-secret
