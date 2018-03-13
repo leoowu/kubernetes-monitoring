@@ -17,3 +17,15 @@ Generate Grafana certs:
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /tmp/tls.key -out /tmp/tls.crt   
 kubectl create secret --namespace monitoring  tls grafana-secret  --key /tmp/tls.key --cert /tmp/tls.crt
 ```
+
+Other:
+```
+kubectl get svc  --namespace monitoring
+```
+
+- Configure Prometheus data source for Grafana:
+`Grafana UI / Data Sources / Add data source`
+  - `Name`: `prometheus`
+  - `Type`: `Prometheus`
+  - `Url`: `http://prometheus:9090`
+  - `Add`
