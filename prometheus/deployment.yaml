@@ -24,17 +24,17 @@ spec:
           - '--config.file=/etc/prometheus/prometheus.yaml'
         env:
         - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
-          value: "asd"
+          value: "12"
         ports:
         - name: webui
           containerPort: 9090
         resources:
           requests:
-            cpu: 250m
-            memory: 250M
+            cpu: 200m
+            memory: 250Mi
           limits:
             cpu: 1000m
-            memory: 1000M
+            memory: 1000Mi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/prometheus

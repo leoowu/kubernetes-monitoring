@@ -20,6 +20,21 @@ spec:
       - name: prometheus-graphite-exporter
         image: prom/graphite-exporter:master
         args:
-          # - '--storage.tsdb.retention=12h'
+          - '--graphite.mapping-config=/tmp/graphite-mapping.conf'
         ports:
-        - containerPort: 9109
+        - name: importer
+          containerPort: 9109
+        - name: exporter
+          containerPort: 9108
+        resources:
+          requests:
+            cpu: 50m
+            memory: 250Mi
+        volumeMounts:
+        - name: graphite-mapping-volume
+          mountPath: /tmp/graphite-mapping.conf
+          subPath: graphite-mapping.conf
+      volumes:
+      - name: graphite-mapping-volume
+        configMap:
+          name: graphite-mapping

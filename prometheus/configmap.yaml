@@ -8,6 +8,26 @@ data:
 
     scrape_configs:
 
+    # Scrape config for Kafka source
+    - job_name: 'kafka_src'
+      # honor_labels: true
+      static_configs:
+      - targets:
+        - broker.kafka-source.svc.cluster.local:5556
+
+    # Scrape config for Kafka destination
+    - job_name: 'kafka_dest'
+      # honor_labels: true
+      static_configs:
+      - targets:
+        - broker.kafka-destination.svc.cluster.local:5556
+
+    # Scrape config for Prometheus itself
+    - job_name: 'prometheus'
+      honor_labels: true
+      static_configs:
+      - targets: ['localhost:9090']
+
     # Scrape config for graphite
     - job_name: 'graphite'
       honor_labels: true
