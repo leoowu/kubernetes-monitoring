@@ -6,8 +6,46 @@ metadata:
   namespace: monitoring
 data:
   graphite-mapping.conf: |
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.*.*
-    name="worker_rebalance"
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.AutoTopicWhitelistManager.*.count
+    name="urp_AutoTopicWhitelistManager"
     controller="$1"
-    metric_type="$2"
-    metric="$3"
+    whitelist_metric="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.*
+    name="urp_KafkaBrokerTopicObserver"
+    controller="$1"
+    cluster="$2"
+    refresh="$3"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.kafkaTopicsCounter_count
+    name="urp_TopicsCounter"
+    controller="$1"
+    cluster="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.externalView_topicPartitions.*.totalNumber_count
+    name="urp_externalView_topicPartitions"
+    controller="$1"
+    worker="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.idealStates_topicPartitions.*.totalNumber_count
+    name="urp_idealStates_topicPartitions"
+    controller="$1"
+    worker="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.topic.*.Number_count
+    name="urp_topic_metric"
+    controller="$1"
+    topic_metric="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.rate.*
+    name="urp_worker_rebalance_rate"
+    controller="$1"
+    rate="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.timer.*
+    name="urp_worker_rebalance_timer"
+    controller="$1"
+    timer="$2"
+
+
+  test.conf: |
