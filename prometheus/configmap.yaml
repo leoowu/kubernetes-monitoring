@@ -30,7 +30,7 @@ data:
 
     # Scrape config for graphite
     - job_name: 'graphite'
-      honor_labels: true
+      # honor_labels: true
       static_configs:
       - targets:
         - prometheus-graphite-exporter.monitoring.svc.cluster.local:9108

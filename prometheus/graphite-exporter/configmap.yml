@@ -7,45 +7,70 @@ metadata:
 data:
   graphite-mapping.conf: |
     stats.k8s.counter.kafka-mirror-maker-controller.testing.*.AutoTopicWhitelistManager.*.count
-    name="urp_AutoTopicWhitelistManager"
+    name="urp_AutoTopic_count"
     controller="$1"
-    whitelist_metric="$2"
+    num_type="$2"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.*
-    name="urp_KafkaBrokerTopicObserver"
-    controller="$1"
-    cluster="$2"
-    refresh="$3"
-
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.kafkaTopicsCounter_count
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.kafkaTopicsCounter.count
     name="urp_TopicsCounter"
     controller="$1"
     cluster="$2"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.externalView_topicPartitions.*.totalNumber_count
-    name="urp_externalView_topicPartitions"
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.*.rate"
+    name="urp_refreshLatency_rate"
     controller="$1"
-    worker="$2"
+    cluster="$2"
+    rate="$3"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.idealStates_topicPartitions.*.totalNumber_count
-    name="urp_idealStates_topicPartitions"
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.*
+    name="urp_refreshLatency_percentile"
     controller="$1"
-    worker="$2"
+    cluster="$2"
+    percentile="$3"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.topic.*.Number_count
-    name="urp_topic_metric"
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.max"
+    name="urp_refreshLatency_max"
     controller="$1"
-    topic_metric="$2"
+    cluster="$2"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.rate.*
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.KafkaBrokerTopicObserver.*.refreshLatency.mean"
+    name="urp_refreshLatency_mean"
+    controller="$1"
+    cluster="$2"
+    
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.*.topicPartitions.*.totalNumber.count
+    name="urp_worker_topicPartitions"
+    controller="$1"
+    state="$2"
+    worker="$3"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.leader.counter.count
+    name="urp_leader_count"
+    controller="$1"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.topic.*.count
+    name="urp_topic"
+    controller="$1"
+    count_type="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.topic.partitions.*.count
+    name="urp_topic_partitions"
+    controller="$1"
+    count_type="$2"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.liveInstances.count
+    name="urp_worker_count"
+    controller="$1"
+
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.rate.*.rate
     name="urp_worker_rebalance_rate"
     controller="$1"
-    rate="$2"
+    rebalance_rate="$2"
 
-    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.timer.*
+    stats.k8s.counter.kafka-mirror-maker-controller.testing.*.worker.rebalance.timer.*.rate
     name="urp_worker_rebalance_timer"
     controller="$1"
-    timer="$2"
+    timer_rate="$2"
 
 
   test.conf: |
