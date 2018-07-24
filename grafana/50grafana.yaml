@@ -33,20 +33,22 @@ spec:
           - name: GF_AUTH_ANONYMOUS_ENABLED
             value: "false"
           - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
-            value: "asd"
+            value: "123"
         readinessProbe:
           httpGet:
             scheme: HTTPS
             path: /login
             port: 3000
-          # initialDelaySeconds: 30
-          # timeoutSeconds: 1
+          initialDelaySeconds: 45
+          timeoutSeconds: 1
         volumeMounts:
           - name: grafana-persistent-storage
             mountPath: /var
           - name: config-volume
             mountPath: /etc/grafana/grafana.ini
             subPath: grafana.ini
+          # - name: config-volume
+          #   mountPath: /etc/grafana/provisioning/dashboards
           - name: grafana-secret
             mountPath: /etc/grafana/tls
       volumes:
@@ -58,3 +60,5 @@ spec:
         - name: grafana-secret
           secret:
             secretName: grafana-secret
+      # nodeSelector:
+      #   grafana: "true"

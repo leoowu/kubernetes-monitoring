@@ -1,4 +1,9 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: prometheus-core
+  namespace: monitoring
 data:
   prometheus.yaml: |
 
@@ -8,34 +13,93 @@ data:
 
     scrape_configs:
 
-    # Scrape config for Kafka source
-    - job_name: 'kafka_src'
-      honor_labels: true
-      static_configs:
-      - targets: [ 'broker.kafka-source.svc.cluster.local:5556' ]
-        labels:
-          kafka_cluster: 'source'
+    # - job_name: 'federate'
+    #   scrape_interval: 15s
+    #
+    #   honor_labels: true
+    #   metrics_path: '/federate'
 
-    # Scrape config for Kafka destination
-    - job_name: 'kafka_dest'
+    #   params:
+    #     'match[]':
+    #       - '{job_name="kafka"}'
+    #       - '{__name__=~"job:.*"}'
+
+    #   static_configs:
+    #     - targets: [ '' ]
+    #       labels:
+    #         k8s_cluster: 'centralus'
+    #         kafka_cluster: 'destination'
+
+    # # Scrape config for Kafka source
+    # - job_name: 'kafka'
+    #   honor_labels: true
+    #   static_configs:
+    #   - targets: [ 'broker.kafka.svc.cluster.local:5556' ]
+    #     labels:
+    #       kafka_cluster: 'source'
+
+    # # Scrape config for Kafka source
+    # - job_name: 'kafka_src'
+    #   honor_labels: true
+    #   static_configs:
+    #   - targets: [ 'broker.kafka-source.svc.cluster.local:5556' ]
+    #     labels:
+    #       kafka_cluster: 'source'
+
+    # # Scrape config for Kafka destination
+    # - job_name: 'kafka_dest'
+    #   honor_labels: true
+    #   static_configs:
+    #   - targets: [ 'broker.kafka-destination.svc.cluster.local:5556' ]
+    #     labels:
+    #       kafka_cluster: 'destination'
+
+
+    # # Scrape config for ureplicator
+    # - job_name: 'ureplicator'
+    #   honor_labels: true
+    #   static_configs:
+    #   - targets: [ 'graphite-exporter.ureplicator.svc.cluster.local:9108' ]
+    #     labels:
+    #       namespace: 'ureplicator'
+    #       app: 'ureplicator'
+
+    # Scrape config for graphite-exporter
+    - job_name: 'ureplicator'
       honor_labels: true
       static_configs:
-      - targets: [ 'broker.kafka-destination.svc.cluster.local:5556' ]
+      - targets: [ 'graphite-exporter.monitoring.svc.cluster.local:9108' ]
         labels:
-          kafka_cluster: 'destination'
+          namespace: 'graphite-exporter'
+          what: 'yes'
+
 
     # Scrape config for Prometheus itself
     - job_name: 'prometheus'
       honor_labels: true
       static_configs:
       - targets: ['localhost:9090']
+        labels:
+          component: 'prometheus'
 
-    # Scrape config for graphite
-    - job_name: 'graphite'
-      # honor_labels: true
+    # Scrape config for Pushgateway
+    - job_name: 'prometheus-pushgateway'
+      honor_labels: true
       static_configs:
-      - targets:
-        - prometheus-graphite-exporter.monitoring.svc.cluster.local:9108
+      - targets: ['prometheus-pushgateway.monitoring.svc.cluster.local:9091']
+        labels:
+          component: 'pushgateway'
+          foo: 'bar'
+
+    # Scrape config for kafka-monitor
+    - job_name: 'kafka-monitor'
+      honor_labels: true
+      static_configs:
+      - targets: [ 'graphite-exporter.kafka-monitor.svc.cluster.local:9108' ]
+        labels:
+          namespace: 'ureplicator'
+          app: 'ureplicator'
+          pod: 'ureplicator'
 
     # Scrape config for API servers.
     - job_name: 'kubernetes-apiservers'
@@ -243,9 +307,9 @@ data:
         action: replace
         target_label: kubernetes_pod_name
 
-
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: prometheus-core
-  namespace: monitoring
+    alerting:
+      alertmanagers:
+      - scheme: http
+        static_configs:
+        - targets:
+          - "prometheus-alertmanager.monitoring.svc.cluster.local:9093"

@@ -3,18 +3,19 @@ kind: Service
 metadata:
   annotations:
     prometheus.io/scrape: 'false'
+    prometheus.io/path: '/metrics'
+  name: prometheus-pushgateway
   namespace: monitoring
-  name: prometheus-graphite-exporter
   labels:
     app: prometheus
-    component: graphite-exporter
+    component: pushgateway
 spec:
   clusterIP: None
   ports:
-    - name: prometheus-graphite-exporter
-      port: 9108
+    - name: prometheus-pushgateway
+      port: 9091
       protocol: TCP
   selector:
     app: prometheus
-    component: graphite-exporter
+    component: pushgateway
   type: ClusterIP

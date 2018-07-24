@@ -1,4 +1,9 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: grafana-config
+  namespace: monitoring
 data:
   grafana.ini: |
     ##################### Grafana Configuration Example #####################
@@ -402,8 +407,3 @@ data:
     ;url =
     ;username =
     ;password =
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: grafana-config
-  namespace: monitoring

@@ -2,19 +2,20 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    prometheus.io/scrape: 'false'
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/metrics'
+  name: prometheus-alertmanager
   namespace: monitoring
-  name: prometheus-graphite-exporter
   labels:
     app: prometheus
-    component: graphite-exporter
+    component: alertmanager
 spec:
   clusterIP: None
   ports:
-    - name: prometheus-graphite-exporter
-      port: 9108
+    - name: prometheus-alertmanager
+      port: 9093
       protocol: TCP
   selector:
     app: prometheus
-    component: graphite-exporter
+    component: alertmanager
   type: ClusterIP

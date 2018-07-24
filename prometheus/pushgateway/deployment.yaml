@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prometheus-pushgateway
+  namespace: monitoring
+  labels:
+    app: prometheus
+    component: pushgateway
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: prometheus-pushgateway
+      labels:
+        app: prometheus
+        component: pushgateway
+    spec:
+      serviceAccountName: prometheus-k8s
+      containers:
+      - name: prometheus-pushgateway
+        image: prom/pushgateway:latest
+        ports:
+        - name: pushgateway
+          containerPort: 9091
+        # resources:
+        #   requests:
+        #     cpu: 50m
+        #     memory: 250Mi
+      #   volumeMounts:
+      #   - name: config-volume
+      #     mountPath: /etc/pushgateway
+      #   - name: templates-volume
+      #     mountPath: /etc/pushgateway-templates
+      #   - name: pushgateway
+      #     mountPath: /pushgateway
+      # volumes:
+      # - name: config-volume
+      #   configMap:
+      #     name: pushgateway
+      # - name: templates-volume
+      #   configMap:
+      #     name: pushgateway-templates
+      # - name: pushgateway
+      #   emptyDir: {}

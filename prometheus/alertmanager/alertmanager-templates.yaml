@@ -2,7 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: graphite-mapping
+  name: alertmanager-templates
   namespace: monitoring
 data:
-  graphite-mapping.conf: |
+  default.tmpl: |
+
+  slack.tmpl: |

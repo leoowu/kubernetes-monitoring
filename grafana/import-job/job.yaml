@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: grafana-import-dashboards
+  namespace: monitoring
+  labels:
+    app: grafana
+    component: import-dashboards
+spec:
+  template:
+    metadata:
+      name: grafana-import-dashboards
+      labels:
+        app: grafana
+        component: import-dashboards
+    spec:
+      restartPolicy: Never
+      serviceAccountName: prometheus-k8s
+      containers:
+      - name: init-import-dashboards
+        image: danielcoman/toolbox:latest
+        imagePullPolicy: IfNotPresent
+        workingDir: /opt/grafana-import-dashboards
+        command: ["/bin/sh", "-c"]
+        args:
+          - >
+            for file in *-datasource.json ; do
+              if [ -e "$file" ] ; then
+                echo "importing datasource: $file" &&
+                curl -k --silent --fail --show-error \
+                  --request POST https://admin:admin@grafana.monitoring.svc.cluster.local:3000/api/datasources \
+                  --header "Content-Type: application/json" \
+                  --data-binary "@$file" ;
+                echo "" ;
+              fi
+            done ;
+            for file in *-dashboard.json ; do
+              if [ -e "$file" ] ; then
+                echo "importing dashboard: $file" &&
+                ( echo '{"dashboard":'; \
+                  cat "$file"; \
+                  echo ',"overwrite":true,"inputs":[{"name":"DS_PROMETHEUS","type":"datasource","pluginId":"prometheus","value":"prometheus"}]}' ) \
+                | jq -c '.' \
+                | curl -k --silent --fail --show-error \
+                  --request POST https://admin:admin@grafana.monitoring.svc.cluster.local:3000/api/dashboards/import \
+                  --header "Content-Type: application/json" \
+                  --data-binary "@-" ;
+                echo "" ;
+              fi
+            done
+        volumeMounts:
+        - name: config-volume
+          mountPath: /opt/grafana-import-dashboards
+      volumes:
+      - name: config-volume
+        configMap:
+          name: grafana-import-dashboards

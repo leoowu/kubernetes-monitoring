@@ -1,0 +1,13 @@
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: grafana-public-ingress
+#   namespace: monitoring
+#   annotations:
+#     kubernetes.io/tls-acme: "true"
+# spec:
+#   tls:
+#   - secretName: grafana-secret
+#   backend:
+#     serviceName: grafana
+#     servicePort: 80
