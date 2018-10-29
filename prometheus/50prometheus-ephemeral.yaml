@@ -18,10 +18,15 @@ spec:
       serviceAccountName: prometheus-k8s
       containers:
       - name: prometheus
-        image: prom/prometheus:v2.1.0
+        image: prom/prometheus:v2.4.3
         args:
-          - '--storage.tsdb.retention=48h'
-          - '--config.file=/etc/prometheus/prometheus.yaml'
+          - '--storage.tsdb.retention=72h'
+          - '--storage.tsdb.path=/prometheus/data'
+          - '--config.file=/prometheus/config/prometheus.yaml'
+          - '--web.enable-lifecycle'
+          - '--web.enable-admin-api'
+          - '--web.console.templates="consoles"'
+          - '--web.console.libraries="console_libraries"'
         env:
         - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
           value: "124"
@@ -30,11 +35,11 @@ spec:
           containerPort: 9090
         resources:
           requests:
-            cpu: 200m
-            memory: 250Mi
-          limits:
-            cpu: 1000m
-            memory: 1000Mi
+            cpu: 10m
+            memory: 150Mi
+          # limits:
+          #   cpu: 1000m
+          #   memory: 1000Mi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/prometheus

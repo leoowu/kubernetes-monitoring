@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: grafana-config
-  namespace: monitoring
+  namespace: grafana
 data:
   grafana.ini: |
     ##################### Grafana Configuration Example #####################
@@ -35,7 +35,7 @@ data:
     #################################### Server ####################################
     [server]
     # Protocol (http or https)
-    protocol = https
+    protocol = http
 
     # The ip address to bind to, empty will bind to all interfaces
     ;http_addr =

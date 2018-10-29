@@ -2,20 +2,14 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: grafana-import-dashboards
-  namespace: monitoring
-  labels:
-    app: grafana
-    component: import-dashboards
+  namespace: grafana
 spec:
+  # ttlSecondsAfterFinished: 200 # k8s 1.12
   template:
     metadata:
       name: grafana-import-dashboards
-      labels:
-        app: grafana
-        component: import-dashboards
     spec:
       restartPolicy: Never
-      serviceAccountName: prometheus-k8s
       containers:
       - name: init-import-dashboards
         image: danielcoman/toolbox:latest
@@ -28,7 +22,7 @@ spec:
               if [ -e "$file" ] ; then
                 echo "importing datasource: $file" &&
                 curl -k --silent --fail --show-error \
-                  --request POST https://admin:admin@grafana.monitoring.svc.cluster.local:3000/api/datasources \
+                  --request POST http://admin:admin@grafana.grafana.svc.cluster.local:3000/api/datasources \
                   --header "Content-Type: application/json" \
                   --data-binary "@$file" ;
                 echo "" ;
@@ -42,7 +36,7 @@ spec:
                   echo ',"overwrite":true,"inputs":[{"name":"DS_PROMETHEUS","type":"datasource","pluginId":"prometheus","value":"prometheus"}]}' ) \
                 | jq -c '.' \
                 | curl -k --silent --fail --show-error \
-                  --request POST https://admin:admin@grafana.monitoring.svc.cluster.local:3000/api/dashboards/import \
+                  --request POST http://admin:admin@grafana.grafana.svc.cluster.local:3000/api/dashboards/import \
                   --header "Content-Type: application/json" \
                   --data-binary "@-" ;
                 echo "" ;

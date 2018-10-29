@@ -1,64 +1,78 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: grafana-core
-  namespace: monitoring
+  name: grafana
+  namespace: grafana
   labels:
     app: grafana
-    component: core
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: grafana
-        component: core
     spec:
+      initContainers:
+# ###--- init ---###
+#         - name: init
+#           image: busybox
+#           imagePullPolicy: IfNotPresent
+#           command:
+#             - sh
+#             - -c
+#             - 'chmod -R a+rwx /var/lib/grafana'
+#           volumeMounts:
+#           # DANGER DATA VOLUME
+#             - name: data
+#               mountPath: /var/lib/grafana
+#           securityContext:
+#             runAsUser: 0
+#           # DANGER DATA VOLUME END
+
       containers:
-      - image: grafana/grafana:5.0.1
-        name: grafana-core
+
+      - image: grafana/grafana:5.3.0
+        name: grafana
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-          limits:
-            cpu: 500m
-            memory: 500Mi
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 100Mi
+        #   limits:
+        #     cpu: 500m
+        #     memory: 500Mi
         env:
           - name: GF_AUTH_BASIC_ENABLED
             value: "true"
           - name: GF_AUTH_ANONYMOUS_ENABLED
             value: "false"
           - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
-            value: "123"
+            value: "1"
         readinessProbe:
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /login
             port: 3000
           initialDelaySeconds: 45
           timeoutSeconds: 1
         volumeMounts:
-          - name: grafana-persistent-storage
-            mountPath: /var
+          - name: data
+            mountPath: /var/lib/grafana
           - name: config-volume
             mountPath: /etc/grafana/grafana.ini
             subPath: grafana.ini
           # - name: config-volume
           #   mountPath: /etc/grafana/provisioning/dashboards
-          - name: grafana-secret
-            mountPath: /etc/grafana/tls
+          # - name: grafana-secret
+          #   mountPath: /etc/grafana/tls
       volumes:
-        - name: grafana-persistent-storage
-          emptyDir: {}
         - name: config-volume
           configMap:
             name: grafana-config
-        - name: grafana-secret
-          secret:
-            secretName: grafana-secret
-      # nodeSelector:
-      #   grafana: "true"
+        # - name: grafana-secret
+        #   secret:
+            # secretName: grafana-secret
+        - name: data
+          emptyDir: {}
