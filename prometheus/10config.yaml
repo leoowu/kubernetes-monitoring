@@ -10,7 +10,7 @@ data:
     global:
       scrape_interval:     15s
       evaluation_interval: 15s
-      scrape_timeout:      20s
+      scrape_timeout:      15s
 
     rule_files:
       - '/prometheus/rules/*.rules'
