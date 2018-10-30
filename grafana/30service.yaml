@@ -6,7 +6,7 @@ metadata:
   labels:
     app: grafana
 spec:
-  clusterIP: None
+  type: NodePort
   ports:
     - port: 3000
       name: http
