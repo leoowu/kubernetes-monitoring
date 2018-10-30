@@ -46,6 +46,6 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: prometheus-core
+          name: prometheus-config
       # nodeSelector:
       #   prom: "true"
