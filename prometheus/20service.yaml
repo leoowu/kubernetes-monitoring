@@ -14,7 +14,7 @@ metadata:
   annotations:
     prometheus.io/scrape: 'true'
 spec:
-  clusterIP: None
+  type: NodePort
   ports:
     - name: prometheus
       port: 9090
