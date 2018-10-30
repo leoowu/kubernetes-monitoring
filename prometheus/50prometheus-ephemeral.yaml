@@ -22,7 +22,7 @@ spec:
         args:
           - '--storage.tsdb.retention=72h'
           - '--storage.tsdb.path=/prometheus/data'
-          - '--config.file=/prometheus/config/prometheus.yaml'
+          - '--config.file=/etc/prometheus/prometheus.yaml'
           - '--web.enable-lifecycle'
           - '--web.enable-admin-api'
           - '--web.console.templates="consoles"'
