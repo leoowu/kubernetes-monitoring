@@ -2,7 +2,7 @@
 
 
 ```
-Kubernetes 1.8+
+Kubernetes 1.12 +
 Grafana:5.3.0
 Prometheus:v2.4.3
 ```
