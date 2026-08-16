@@ -13,6 +13,8 @@
 | [03-stage1-physics-interface.md](./03-stage1-physics-interface.md) | Stage 1：物理与接口（Token / API / 幻觉边界） |
 | [04-stage2-external-capabilities.md](./04-stage2-external-capabilities.md) | Stage 2：组织知识库（RAG）与工具总线（MCP） |
 | [05-stage2-case-aiops-bot.md](./05-stage2-case-aiops-bot.md) | Stage 2 案例：AI 运维机器人（EKS/Grafana/Loki/AWS 只读） |
+| [06-stage3-agent-harness.md](./06-stage3-agent-harness.md) | Stage 3：Agent + Harness（角色 / 审批 / 状态机） |
+| [07-stage3-case-approval-gate.md](./07-stage3-case-approval-gate.md) | Stage 3 案例：诊断结论如何进审批门 |
 | [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照（可选） |
 | [side-tracks/P-private-deploy.md](./side-tracks/P-private-deploy.md) | 侧轨 P：私有化推理起步 |
 | [side-tracks/O-org-spec.md](./side-tracks/O-org-spec.md) | 侧轨 O：虚拟小团队规格（SDD） |
@@ -20,9 +22,9 @@
 
 ## 当前焦点（2026-08-16）
 
-- **已完成**：背景/框架入库；Stage 0–2 讲义
-- **下一课**：Stage 3 Agent + Harness（角色、审批、工作流闭环）
-- **侧轨**：P 从 Stage 1 末可并行；O 规格先行，Stage 3 可执行化
+- **已完成**：Stage 0–3 讲义与运维机器人案例（含审批门）
+- **下一课**：Stage 4 DL 基础 → Stage 5 Transformer/LLM → Stage 6 推理平台
+- **侧轨**：O 与 Stage 3 角色矩阵对齐；P 并行
 
 ## 维护模板（每次追加）
 
