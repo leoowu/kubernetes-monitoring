@@ -12,6 +12,7 @@
 | [02-stage0-coordinate-system.md](./02-stage0-coordinate-system.md) | Stage 0：坐标系（北极星 / OSI / 六层 / 四轴） |
 | [03-stage1-physics-interface.md](./03-stage1-physics-interface.md) | Stage 1：物理与接口（Token / API / 幻觉边界） |
 | [04-stage2-external-capabilities.md](./04-stage2-external-capabilities.md) | Stage 2：组织知识库（RAG）与工具总线（MCP） |
+| [05-stage2-case-aiops-bot.md](./05-stage2-case-aiops-bot.md) | Stage 2 案例：AI 运维机器人（EKS/Grafana/Loki/AWS 只读） |
 | [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照（可选） |
 | [side-tracks/P-private-deploy.md](./side-tracks/P-private-deploy.md) | 侧轨 P：私有化推理起步 |
 | [side-tracks/O-org-spec.md](./side-tracks/O-org-spec.md) | 侧轨 O：虚拟小团队规格（SDD） |
@@ -19,9 +20,9 @@
 
 ## 当前焦点（2026-08-16）
 
-- **已完成归档**：背景档案 v0.2、学习框架 v0.2
-- **本轮推进**：Stage 0 坐标系固化 + Stage 1 Episode 1（机制课 + 四模型对照实验设计 + 私有化引子）
-- **侧轨启动**：P 轨从 Stage 1 末开始；O 轨先写规格，Stage 3 再可执行化
+- **已完成**：背景/框架入库；Stage 0–2 讲义
+- **下一课**：Stage 3 Agent + Harness（角色、审批、工作流闭环）
+- **侧轨**：P 从 Stage 1 末可并行；O 规格先行，Stage 3 可执行化
 
 ## 维护模板（每次追加）
 
