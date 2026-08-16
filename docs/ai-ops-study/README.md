@@ -11,7 +11,8 @@
 | [01-learning-framework.md](./01-learning-framework.md) | 四轴 + 七阶段总框架（v0.2） |
 | [02-stage0-coordinate-system.md](./02-stage0-coordinate-system.md) | Stage 0：坐标系（北极星 / OSI / 六层 / 四轴） |
 | [03-stage1-physics-interface.md](./03-stage1-physics-interface.md) | Stage 1：物理与接口（Token / API / 幻觉边界） |
-| [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照 |
+| [04-stage2-external-capabilities.md](./04-stage2-external-capabilities.md) | Stage 2：组织知识库（RAG）与工具总线（MCP） |
+| [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照（可选） |
 | [side-tracks/P-private-deploy.md](./side-tracks/P-private-deploy.md) | 侧轨 P：私有化推理起步 |
 | [side-tracks/O-org-spec.md](./side-tracks/O-org-spec.md) | 侧轨 O：虚拟小团队规格（SDD） |
 | [PROGRESS.md](./PROGRESS.md) | 进度与下一动作 |
