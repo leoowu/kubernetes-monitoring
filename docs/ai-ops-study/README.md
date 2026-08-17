@@ -15,6 +15,7 @@
 | [05-stage2-case-aiops-bot.md](./05-stage2-case-aiops-bot.md) | Stage 2 案例：AI 运维机器人（EKS/Grafana/Loki/AWS 只读） |
 | [06-stage3-agent-harness.md](./06-stage3-agent-harness.md) | Stage 3：Agent + Harness（角色 / 审批 / 状态机） |
 | [07-stage3-case-approval-gate.md](./07-stage3-case-approval-gate.md) | Stage 3 案例：诊断结论如何进审批门 |
+| [08-aiops-bot-permission-analysis.md](./08-aiops-bot-permission-analysis.md) | 可分享：AI 运维机器人权限与行动面分析（通用版） |
 | [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照（可选） |
 | [side-tracks/P-private-deploy.md](./side-tracks/P-private-deploy.md) | 侧轨 P：私有化推理起步 |
 | [side-tracks/O-org-spec.md](./side-tracks/O-org-spec.md) | 侧轨 O：虚拟小团队规格（SDD） |
