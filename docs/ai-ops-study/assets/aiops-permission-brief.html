@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 运维机器人：权限与行动面分析</title>
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --paper: #fffdf9;
+    --ink: #1c1917;
+    --muted: #57534e;
+    --line: #e7e0d5;
+    --accent: #0f766e;
+    --warn: #9a3412;
+    --card: #f5f0e8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, #ebe4d8 0%, var(--bg) 120px);
+    color: var(--ink);
+    font-family: "PingFang SC", "Noto Sans SC", "Source Han Sans SC",
+      "Microsoft YaHei", sans-serif;
+    line-height: 1.65;
+  }
+  .shot {
+    width: 800px;
+    margin: 0 auto;
+    padding: 36px 28px 48px;
+  }
+  .paper {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 40px 44px 48px;
+    box-shadow: 0 12px 40px rgba(28, 25, 23, 0.08);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  h1 {
+    margin: 0 0 14px;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 12px 14px;
+    background: var(--card);
+    border-radius: 10px;
+    margin-bottom: 28px;
+  }
+  h2 {
+    margin: 28px 0 12px;
+    font-size: 18px;
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+  }
+  p, li { font-size: 14.5px; }
+  ul { padding-left: 1.2em; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .essence {
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    font-size: 14.5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 10px 0 6px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 9px 10px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th {
+    background: #f3eee5;
+    font-weight: 700;
+  }
+  tr:nth-child(even) td { background: #fcfaf6; }
+  .note {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--muted);
+    padding: 10px 12px;
+    background: #fff7ed;
+    border-left: 3px solid var(--warn);
+  }
+  .principle {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .actions h3 {
+    margin: 16px 0 6px;
+    font-size: 15px;
+    color: var(--accent);
+  }
+  .actions ol {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+  .actions li { margin: 6px 0; font-size: 14px; }
+  .verdict {
+    margin-top: 22px;
+    padding: 16px 16px;
+    border-radius: 12px;
+    background: #134e4a;
+    color: #ecfdf5;
+    font-size: 14.5px;
+  }
+  .verdict strong { color: #5eead4; }
+  .footer {
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+  <div class="shot">
+    <div class="paper">
+      <div class="eyebrow">AI OPS · SECURITY BRIEF</div>
+      <h1>AI 运维机器人：权限与行动面分析（通用版）</h1>
+      <div class="meta">
+        适用：对话入口（如 Lark）+ MCP 多系统接入的 AI 运维 / 诊断 Agent<br/>
+        说明：以「代码库未授权读取 + 打包外发」为个案引子，结论与 Action 均为通用原则
+      </div>
+
+      <h2>1. 案例摘要（抽象）</h2>
+      <p>组织部署了对话驱动的 AI 运维机器人，经 MCP 接入观测、云、容器编排、代码托管、运维平台等多类系统，承担查询 / 诊断 / 分析等职责。</p>
+      <p><strong>个案表现（仅作引子）：</strong></p>
+      <ul>
+        <li>人对代码仓库有严格 ACL，但经机器人仍获取到非授权仓库内容</li>
+        <li>对话可触发「读取 → 打包 → 上传外网 → 匿名下载链接」类能力</li>
+      </ul>
+      <div class="essence">
+        <strong>通用本质：</strong>Agent 未按终端用户身份约束行动，高危能力与低摩擦对话入口未隔离，导致人侧权限模型在 Agent 路径上失效。
+      </div>
+
+      <h2>2. 通用问题分析</h2>
+      <table>
+        <thead>
+          <tr><th style="width:36px">#</th><th style="width:150px">问题</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>混乱代理人<br/>Confused Deputy</td><td>工具按 Bot 服务身份鉴权，而非终端用户身份 → 人的 ACL 被绕过</td></tr>
+          <tr><td>2</td><td>权限模型错误</td><td>宽权限服务号 + 对话任意触发 → 爆炸半径从「用户可见范围」放大到「Bot 能访问的一切」</td></tr>
+          <tr><td>3</td><td>能力分级缺失</td><td>只读探测、写变更、数据出境、跨租户查询等混挂在同一 Agent / 同一会话</td></tr>
+          <tr><td>4</td><td>Harness / 策略引擎缺失</td><td>无强制门禁（身份下行、白名单、审批、审计）；仅靠 Prompt 约束无效</td></tr>
+          <tr><td>5</td><td>入口信任过高</td><td>IM 对话指令被直接当作已授权的取数 / 变更请求</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        个案映射：未授权读仓 = 问题 1/2；打包外发匿名链接 = 问题 3/4 在「数据出境」上的实例。同类风险可出现在日志导出、配置拉取、工单附件外发、跨环境查询等任意高危动作上。
+      </div>
+
+      <h2>3. 能力分级（建议）</h2>
+      <table>
+        <thead>
+          <tr><th>级别</th><th>类型</th><th>示例</th><th>对话态默认策略</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L0</td><td>无害只读</td><td>查公开文档、百科式说明</td><td>可自动</td></tr>
+          <tr><td>L1</td><td>授权范围内只读探测</td><td>查指标 / 日志 / 资源描述（受用户 ACL 约束）</td><td>可自动，强审计</td></tr>
+          <tr><td>L2</td><td>写变更 / 产生影响</td><td>重启、改配置、扩缩容、变更工单状态</td><td>默认拒绝；审批后短时放开</td></tr>
+          <tr><td>L3</td><td>数据出境 / 批量导出 / 跨租户</td><td>打包外发、匿名链接、全量导出、跨账号读取</td><td>默认禁用；独立变更流程 + 双人审批</td></tr>
+        </tbody>
+      </table>
+      <p class="principle">原则：诊断对话默认最多到 L1；L2/L3 不得与诊断 Agent 同进程默认挂载。</p>
+
+      <h2>4. 改进 Action（通用）</h2>
+      <div class="actions">
+        <h3>P0（立即）</h3>
+        <ol>
+          <li>身份下行：所有 MCP / API 调用绑定终端用户身份（或「用户权限 ∩ Bot 权限」），禁止万能服务号代表任意用户读写</li>
+          <li>工具分级 + 默认拒绝：按上表分级；L2/L3 从对话诊断 Agent 卸载或默认不可调用</li>
+          <li>高危通道拆分：写变更、出境、批量导走出独立审批流，不与日常诊断会话混用</li>
+        </ol>
+        <h3>P1（短期）</h3>
+        <ol start="4">
+          <li>策略引擎硬闸（非 Prompt）：校验「动作类型 × 环境 × 对象范围 × 用户 ACL」，失败则短路拒绝</li>
+          <li>统一审计与回放：记录谁、何时、对何资源、以何身份发起了何次 tool_call；支持越权排查</li>
+          <li>入口约束：限制可调用人 / 群 / 环境；高危意图转工单，不直接执行</li>
+        </ol>
+        <h3>P2（持续）</h3>
+        <ol start="7">
+          <li>最小暴露：按域拆分凭证与网络出口；敏感路径 / 字段脱敏与黑名单</li>
+          <li>门禁回归验证：固定用例「低权用户请求高权资源 / 出境动作」必须失败；防止权限回潮</li>
+        </ol>
+      </div>
+
+      <h2>5. 一句话结论</h2>
+      <div class="verdict">
+        通用解法是 <strong>用户身份下行 + 工具分级隔离 + 策略硬闸 + 审计</strong>。<br/>
+        「未授权读仓并外发」只是错误权限模型下 L3 数据出境的一个实例，同类问题会在任何未按用户 ACL 约束的工具上重复出现。
+      </div>
+      <div class="footer">2026-08-17 · AI Ops Security Brief</div>
+    </div>
+  </div>
+</body>
+</html>
