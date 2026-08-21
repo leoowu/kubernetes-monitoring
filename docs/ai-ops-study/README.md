@@ -16,16 +16,17 @@
 | [06-stage3-agent-harness.md](./06-stage3-agent-harness.md) | Stage 3：Agent + Harness（角色 / 审批 / 状态机） |
 | [07-stage3-case-approval-gate.md](./07-stage3-case-approval-gate.md) | Stage 3 案例：诊断结论如何进审批门 |
 | [08-aiops-bot-permission-analysis.md](./08-aiops-bot-permission-analysis.md) | 可分享：AI 运维机器人权限与行动面分析（通用版） |
+| [09-stage4-dl-basics.md](./09-stage4-dl-basics.md) | Stage 4：DL 基础（机制向） |
 | [experiments/E1-multimodel-control.md](./experiments/E1-multimodel-control.md) | Episode 1 实验：四模型对照（可选） |
 | [side-tracks/P-private-deploy.md](./side-tracks/P-private-deploy.md) | 侧轨 P：私有化推理起步 |
 | [side-tracks/O-org-spec.md](./side-tracks/O-org-spec.md) | 侧轨 O：虚拟小团队规格（SDD） |
 | [PROGRESS.md](./PROGRESS.md) | 进度与下一动作 |
 
-## 当前焦点（2026-08-16）
+## 当前焦点（2026-08-21）
 
-- **已完成**：Stage 0–3 讲义与运维机器人案例（含审批门）
-- **下一课**：Stage 4 DL 基础 → Stage 5 Transformer/LLM → Stage 6 推理平台
-- **侧轨**：O 与 Stage 3 角色矩阵对齐；P 并行
+- **已完成**：Stage 0–4；权限分析可分享稿与长截图
+- **下一课**：Stage 5 Transformer/LLM → Stage 6 推理平台
+- **侧轨**：P 与 Stage 5/6 汇合；O 与权限下行落地
 
 ## 维护模板（每次追加）
 
